@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package quiz;
+
+option go_package = "github.com/oliveryanh/quiz/generated";
+
+
+// 问卷服务接口
+service QuizService {
+    // 获取问卷方法
+    rpc GetQuiz (GetQuizRequest) returns (GetQuizResponse) {}
+
+    // 提交问卷答案并获取结果方法
+    rpc SubmitQuiz (SubmitQuizRequest) returns (SubmitQuizResponse) {}
+}
+
+// 获取问卷请求消息
+message GetQuizRequest {}
+
+// 获取问卷响应消息
+message GetQuizResponse {
+    Quiz quiz = 1;
+}
+
+// 提交问卷答案并获取结果请求消息
+message SubmitQuizRequest {
+    repeated QuestionAnswer question_answers = 1;
+}
+
+// 提交问卷答案并获取结果响应消息
+message SubmitQuizResponse {
+    int32 score = 1;
+    string result = 2;
+}
+
+// 问卷消息类型
+message Quiz {
+    repeated Question questions = 1;
+}
+
+// 问题消息类型
+message Question {
+    string id = 1;
+    string text = 2;
+    repeated Answer answers = 3;
+    string correct_answer = 4;
+}
+
+// 答案消息类型
+message Answer {
+    string id = 1;
+    string text = 2;
+}
+
+// 用户提交的问卷答案消息类型
+message QuestionAnswer {
+    string question_id = 1;
+    string answer_id = 2;
+}

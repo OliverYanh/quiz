@@ -1,0 +1,55 @@
+{
+    "answers": [
+      {"id": "1", "text": "Paris"},
+      {"id": "2", "text": "London"},
+      {"id": "3", "text": "Berlin"},
+      {"id": "a4", "text": "Rome"},
+      {"id": "a5", "text": "3"},
+      {"id": "a6", "text": "4"},
+      {"id": "a7", "text": "5"},
+      {"id": "a8", "text": "6"},
+      {"id": "a9", "text": "Mars"},
+      {"id": "a10", "text": "Venus"},
+      {"id": "a11", "text": "Jupiter"},
+      {"id": "a12", "text": "Saturn"}
+    ],
+    "questions": [
+      {
+        "id": "q1",
+        "text": "What is the capital of France?",
+        "answers": [
+          {"id": "1", "text": "Paris"},
+          {"id": "a2", "text": "London"},
+          {"id": "a3", "text": "Berlin"},
+          {"id": "a4", "text": "Rome"}
+        ],
+        "correctAnswer": "a1"
+      },
+      {
+        "id": "q2",
+        "text": "What is 2 + 2?",
+        "answers": [
+          {"id": "a5", "text": "3"},
+          {"id": "a6", "text": "4"},
+          {"id": "a7", "text": "5"},
+          {"id": "a8", "text": "6"}
+        ],
+        "correctAnswer": "a6"
+      },
+      {
+        "id": "q3",
+        "text": "What is the largest planet in our solar system?",
+        "answers": [
+          {"id": "a9", "text": "Mars"},
+          {"id": "a10", "text": "Venus"},
+          {"id": "a11", "text": "Jupiter"},
+          {"id": "a12", "text": "Saturn"}
+        ],
+        "correctAnswer": "a11"
+      }
+    ],
+    "quiz": {
+      "questions": ["q1", "q2", "q3"]
+    }
+  }
+  

@@ -1,0 +1,41 @@
+{
+    "questions": [
+      {
+        "id": "1",
+        "text": "What is the capital of France?",
+        "answers": [
+          {"id": "1", "text": "Paris"},
+          {"id": "2", "text": "London"},
+          {"id": "3", "text": "Berlin"},
+          {"id": "4", "text": "Rome"}
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "id": "2",
+        "text": "What is 2 + 2?",
+        "answers": [
+          {"id": "5", "text": "3"},
+          {"id": "6", "text": "4"},
+          {"id": "7", "text": "5"},
+          {"id": "8", "text": "6"}
+        ],
+        "correctAnswer": "2"
+      },
+      {
+        "id": "3",
+        "text": "What is the largest planet in our solar system?",
+        "answers": [
+          {"id": "1", "text": "Mars"},
+          {"id": "2", "text": "Venus"},
+          {"id": "3", "text": "Jupiter"},
+          {"id": "4", "text": "Saturn"}
+        ],
+        "correctAnswer": "3"
+      }
+    ],
+    "quiz": {
+      "questions": ["q1", "q2", "q3"]
+    }
+  }
+  
