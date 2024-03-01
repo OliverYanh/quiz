@@ -18,7 +18,7 @@
         "id": "q1",
         "text": "What is the capital of France?",
         "answers": [
-          {"id": "1", "text": "Paris"},
+          {"id": "a1", "text": "Paris"},
           {"id": "a2", "text": "London"},
           {"id": "a3", "text": "Berlin"},
           {"id": "a4", "text": "Rome"}

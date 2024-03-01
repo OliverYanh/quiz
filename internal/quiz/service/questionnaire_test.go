@@ -2,37 +2,14 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"testing"
 
 	"github.com/oliveryanh/quiz/internal/quiz/model"
 )
 
-func setUp(testName string) func() {
-	fmt.Printf("\tsetUp fixture for %s\n", testName)
-	return func() {
-		fmt.Printf("\ttearDown fixture for %s\n", testName)
-	}
-}
-
-func TestFuncl(t *testing.T) {
-	t.Cleanup(setUp(t.Name()))
-	fmt.Printf("\tExecute test:%s\n", t.Name())
-}
-
-func pkgSetUp(pkgName string) func() {
-	fmt.Printf("package SetUp fixture for %s\n", pkgName)
-	return func() {
-		fmt.Printf("package TearDown fixture for %s\n", pkgName)
-	}
-}
-func TestMain(m *testing.M) {
-	defer pkgSetUp("package test")
-	m.Run()
-}
 func TestQuestionnaireService_LoadQuizData(t *testing.T) {
-	// 准备测试数据
+	// Prepare test data
 	quizData := &model.Quiz{
 		ID: "123",
 		Questions: []model.Question{
@@ -42,40 +19,39 @@ func TestQuestionnaireService_LoadQuizData(t *testing.T) {
 				Answers:       []model.Answer{{ID: "a1", Text: "Paris"}, {ID: "a2", Text: "London"}, {ID: "a3", Text: "Berlin"}, {ID: "a4", Text: "Rome"}},
 				CorrectAnswer: "a1",
 			},
-			// 添加更多的问题...
 		},
 	}
-	// 将测试数据写入临时文件
+	// Write test data to temp file
 	tempFile, err := os.CreateTemp("", "quiz_data_*.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.Remove(tempFile.Name()) // 删除临时文件
+	defer os.Remove(tempFile.Name()) // Delete temp file
 	jsonEncoder := json.NewEncoder(tempFile)
 	if err := jsonEncoder.Encode(quizData); err != nil {
 		t.Fatal(err)
 	}
 
-	// 创建 QuestionnaireService 实例
+	// Create QuestionnaireService instance
 	qs, _ := NewQuestionnaireService()
 
-	// 加载测试数据
+	// Load test data
 	err = qs.LoadQuizData(tempFile.Name())
 	if err != nil {
 		t.Errorf("LoadQuizData() returned unexpected error: %v", err)
 	}
 
-	// 检查加载的数据是否正确
+	// Check if the loaded data is correct.
 	if len(qs.GetQuiz().Questions) != len(quizData.Questions) {
 		t.Errorf("LoadQuizData() did not load the correct number of questions")
 	}
 }
 
 func TestQuestionnaireService_SubmitUserAnswers(t *testing.T) {
-	// 创建 QuestionnaireService 实例
+	// Create an instance of the QuestionnaireService.
 	qs, _ := NewQuestionnaireService()
 
-	// 设置测试数据
+	// Set up test data.
 	quizData := &model.Quiz{
 		ID: "123",
 		Questions: []model.Question{
@@ -85,25 +61,23 @@ func TestQuestionnaireService_SubmitUserAnswers(t *testing.T) {
 				Answers:       []model.Answer{{ID: "a1", Text: "Paris"}, {ID: "a2", Text: "London"}, {ID: "a3", Text: "Berlin"}, {ID: "a4", Text: "Rome"}},
 				CorrectAnswer: "a1",
 			},
-			// 添加更多的问题...
 		},
 	}
-	qs.LoadQuizDataFromMemory(quizData) // 使用内存中的测试数据
+	qs.LoadQuizDataFromMemory(quizData) // Use test data in memory.
 
-	// 提交用户答案
+	// Submit user answers.
 	userAnswers := map[string]string{
-		"q1": "a1", // 正确答案
-		// 添加更多的用户答案...
+		"q1": "a1", // Correct answers
 	}
 	score, _ := qs.SubmitUserAnswers(userAnswers)
 
-	// 检查得分是否正确
-	expectedScore := int32(1) // 此处假设用户只答对了一道题
+	// Check if the score is correct.
+	expectedScore := int32(1) // Here it is assumed that the user only answered one question correctly.
 	if score != expectedScore {
 		t.Errorf("SubmitUserAnswers() returned incorrect score: got %d, want %d", score, expectedScore)
 	}
 
-	// 检查用户答案和得分是否正确存储
+	// Check if user answers and scores are correctly stored.
 	quiz := qs.GetQuiz()
 	if quiz.Score != 1 {
 		t.Errorf("SubmitUserAnswers() did not store correct score: got %d, want %d", quiz.Score, expectedScore)
@@ -112,5 +86,44 @@ func TestQuestionnaireService_SubmitUserAnswers(t *testing.T) {
 		if quiz.UserAnswers[questionID] != expectedAnswer {
 			t.Errorf("SubmitUserAnswers() did not store correct user answer for question %s: got %s, want %s", questionID, quiz.UserAnswers[questionID], expectedAnswer)
 		}
+	}
+}
+
+func TestNewQuestionnaireService(t *testing.T) {
+
+	qs, err := NewQuestionnaireService()
+
+	if err != nil {
+		t.Fatal("Unexpected error creating QuestionnaireService")
+	}
+
+	if qs.quiz == nil {
+		t.Fatal("Quiz is nil after creating QuestionnaireService")
+	}
+
+	// Check the default number of loaded questions.
+	if len(qs.quiz.Questions) != 3 {
+		t.Errorf("Expected 3 default questions, got %d", len(qs.quiz.Questions))
+	}
+}
+
+func TestLoadQuizData(t *testing.T) {
+
+	qs, _ := NewQuestionnaireService()
+
+	// Prepare test question data.
+	quizData := &model.Quiz{
+		Questions: []model.Question{
+			{ID: "q1"},
+			{ID: "q2"},
+		},
+	}
+
+	// Test loading.
+	qs.LoadQuizDataFromMemory(quizData)
+
+	// Check the number of questions.
+	if len(qs.GetQuiz().Questions) != 2 {
+		t.Error("Failed to load expected number of questions")
 	}
 }
